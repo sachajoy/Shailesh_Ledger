@@ -1,0 +1,38 @@
+{% extends 'base_template.html' %}
+{% block content %}
+
+    <table class="table table-bordered table-dark">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Mobile Number</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th>Name</th>
+            <th>Mobile Number</th>
+            <th>Amount</th>
+        </tr>
+        </tfoot>
+        <tbody>
+        {% for client in client_list %}
+            <tr class="{% if client.val > 0 %}
+                            bg-danger
+                            {% elif client.val < 0 %}bg-success
+                            {% else %} bg-primary
+                        {% endif %} ">
+
+                <th><a style="color: white;"
+                       href="{% url 'add-trancation' id=client.id %}">{{ client.name }}</a></th>
+
+                <td>{{ client.mobno }}</td>
+                <td>{{ client.val }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}

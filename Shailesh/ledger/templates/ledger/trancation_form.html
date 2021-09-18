@@ -1,0 +1,176 @@
+{% extends 'base_template.html' %}
+{% block style %}
+    <style>
+        .table-condensed > thead > tr > th,
+        .table-condensed > tbody > tr > th,
+        .table-condensed > tfoot > tr > th,
+        .table-condensed > thead > tr > td,
+        .table-condensed > tbody > tr > td,
+        .table-condensed > tfoot > tr > td {
+            padding: 1px;
+            font-size: 13px;
+            font-weight: bolder;
+            text-align: center;
+
+        }
+
+        .table-striped > tbody > tr:nth-child(2n+1) > td {
+            font-weight: bolder;
+            background-color: #E8EAF6;
+        {#color: white;#}
+        }
+
+        .table-striped > tbody > tr > th {
+            font-weight: bolder;
+            background-color: #1565C0;
+
+        }
+
+        .table-striped > tbody > tr:nth-child(2n) > td {
+            font-weight: bolder;
+            background-color: #9FA8DA;
+        {#color: white;#}
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <a href="{% url 'add-trancation' id=trancations.id %}"><span
+            style="font-size: 30px; font-weight: bolder;">
+         {{ trancations.name }}
+
+    </span></a>
+    <a class="btn btn-primary"
+       href="{% url 'client-ledger' id=trancations.id %}">Ledger Records</a>
+    <a class="btn btn-primary"
+       href="{% url 'from-to' id=trancations.id %}">From To</a>
+    <a class="btn btn-primary"
+       href="{% url 'update-client' pk=trancations.id %}">Update Client</a>
+    <form method="post" style="margin-top: 10px;">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-1" style="padding: 0px; margin: 0px;">
+                {{ form.amount }}
+            </div>
+            <div class="col-2" style="padding: 0px; margin: 0px;">
+                {{ form.sector }}
+            </div>
+            <div class="col-1" style="padding: 0px; margin: 0px;">
+                {{ form.date }}
+            </div>
+            <div class="col-2" style="padding: 0px; margin: 0px;">
+                {{ form.booking_date }}
+            </div>
+            <div class="col-3" style="padding: 0px; margin: 0px;">
+                {{ form.passenger_list }}
+            </div>
+            <div class="col-2" style="padding: 0px; margin: 0px;">
+                <div class="input-group">
+                    {{ form.remarks }}
+
+                </div>
+
+            </div>
+            <div class="col-1">
+                <input type="submit" class="btn btn-success" value="submit">
+            </div>
+
+        </div>
+    </form>
+
+    <table style=" padding-bottom: 0px; margin-bottom: 0px; font-weight: bold;"
+           class="table table-condensed table-sm table-striped table-bordered">
+        <tr style="color: white;">
+            <th style="width: 5%; ">Amount</th>
+            <th style="width: 10%;">Sector</th>
+            <th style="width: 10%;">Date</th>
+            <th style="width: 8%;">Booking Date</th>
+            <th style="width: 47%;">Passenger Name</th>
+            <th style="width: 10%;">Remarks</th>
+            <th style="width: 5%;">Verifed</th>
+            <th style="width: 5%;">Delete</th>
+        </tr>
+
+
+        {% for trancation in trancations.trancation_set.all %}
+            {% if trancation.amount > 0 %}
+                <tr>
+                    <td style="width: 5%; text-align: right;">
+                        <a href="{% url 'tran-update' pk=trancation.id client_id=trancations.id %}">
+                            {{ trancation.amount }}
+                        </a>
+                    </td>
+                    <td style="width: 10%;">{{ trancation.sector }}</td>
+                    <td style="width: 10%;">{{ trancation.date }}</td>
+                    <td style="width: 8%;">
+                        {{ trancation.booking_date|date:'d-M-y'  }}</td>
+                    <td style="width: 47%;">{{ trancation.passenger_list }}</td>
+                    <td style="width: 15%;">{{ trancation.remarks }}</td>
+                    <td style="width: 5%;">
+                        <a href="{% url 'verifed-entry' id=trancation.id client_id=trancations.id %}"
+                           class="btn {% if trancation.verifed %}
+                        btn-success {% else %} btn-danger
+                    {% endif %} "></a>
+                    </td>
+                    <td>
+                        <a class="btn btn-close"
+                           href="
+    {% url 'delete-tranction' pk=trancation.id client_id=trancations.id %}">
+
+                        </a>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+
+
+    </table>
+    <table style=" padding-bottom: 0px; margin-bottom: 0px; border: 2px solid black;"
+           class="table table-condensed table-sm table-bordered">
+        <tr>
+            <th style="width: 5%; ">Amount</th>
+            <th style="width: 10%;">Sector</th>
+            <th style="width: 10%;">Date</th>
+            <th style="width: 8%;">Booking Date</th>
+            <th style="width: 47%;">Passenger Name</th>
+            <th style="width: 15%;">Remarks</th>
+            <th style="width: 5%;">Verifed</th>
+            <th style="width: 5%;">Delete</th>
+
+        </tr>
+
+
+        {% for trancation in trancations.trancation_set.all %}
+            {% if trancation.amount < 0 %}
+                <tr>
+                    <td style="width: 5%; text-align: right;">
+                        <a href="{% url 'tran-update' pk=trancation.id client_id=trancations.id %}">
+                            {{ trancation.amount }}
+                        </a>
+                    </td>
+                    <td style="width: 10%;">{{ trancation.sector }}</td>
+                    <td style="width: 10%;">{{ trancation.date }}</td>
+                    <td style="width: 8%;">
+                        {{ trancation.booking_date|date:'d-M-y' }}</td>
+                    <td style="width: 47%;">{{ trancation.passenger_list }}</td>
+                    <td style="width: 15%;">{{ trancation.remarks }}</td>
+                    <td style="width: 5%;">
+                        <a href="{% url 'verifed-entry' id=trancation.id client_id=trancations.id %}"
+                           class="btn {% if trancation.verifed %}
+                        btn-success {% else %} btn-danger
+                    {% endif %} "></a>
+                    </td>
+                <td>
+                        <a class="btn btn-close"
+                           href="
+    {% url 'delete-tranction' pk=trancation.id client_id=trancations.id %}">
+
+                        </a>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+
+
+    </table>
+
+{% endblock %}

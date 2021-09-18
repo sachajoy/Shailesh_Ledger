@@ -1,0 +1,40 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+
+    <table class="table table-bordered table-sm table-hover">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th style="text-align: center;">Amount ( {{ total  }}  )</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for client in pending %}
+            <tr>
+
+                    <th>
+                        <a href="{% url 'add-trancation' id=client.id %}">
+                            {{ client.name }}
+                        </a>
+                    </th>
+                    <td style="background-color: {% if client.val > 0 %}
+                        #ff5733
+                    {% elif client.val < 0 %}
+                        #4CAF50
+
+                    {% endif %}; text-align: center;">
+
+                        {{ client.val }}
+
+                    </td>
+
+
+            </tr>
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+{% endblock %}

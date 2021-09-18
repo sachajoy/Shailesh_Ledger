@@ -1,0 +1,41 @@
+{% extends 'base_template.html' %}
+{% block content %}
+
+    <table class="table table-bordered table-dark">
+        <thead>
+        <tr>
+            <th>Sr. No.</th>
+            <th>Date</th>
+            <th>Sector</th>
+            <th>Amount</th>
+            <th>Remarks</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th>Sr. No.</th>
+            <th>Date</th>
+            <th>Sector</th>
+            <th>Amount</th>
+            <th>Remarks</th>
+        </tr>
+        </tfoot>
+        <tbody>
+        {% for detail in client_details %}
+            <tr class="{% if detail.amount > 0 %}
+                            bg-danger
+                            {% elif detail.amount < 0 %}bg-success
+                            {% else %} bg-primary
+                        {% endif %}">
+                <td></td>
+                <td>{{ detail.date }}</td>
+                <td>{{ detail.sector }}</td>
+                <td>{{ detail.amount }}</td>
+                <td>{{ detail.remarks }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}

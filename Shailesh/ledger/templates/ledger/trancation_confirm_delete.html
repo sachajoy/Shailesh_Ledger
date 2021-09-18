@@ -1,0 +1,28 @@
+{% extends 'base_template.html' %}
+{% block content %}
+
+
+        <form method="post">
+       {% csrf_token %}
+        <p>Are you sure want to delete</p>
+            <table class="table table-bordered">
+                <tr>
+                    <td>Amount</td>
+                    <td>Sector</td>
+                    <td>Date</td>
+                    <td>Passenger List</td>
+                </tr>
+                <tr>
+                    <td>{{ object.amount }}</td>
+                    <td>{{ object.sector }}</td>
+                    <td>{{ object.date }}</td>
+                    <td>{{ object.passenger_list }}</td>
+                </tr>
+            </table>
+            <input type="submit" value="Delete">
+
+        </form>
+
+
+
+{% endblock %}

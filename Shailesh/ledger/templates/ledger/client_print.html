@@ -1,0 +1,218 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <title>{{ client.name }} {{ tran.last.booking_date | date:'d-M-Y' | upper }}
+        </title>
+</head>
+<style>
+    .table-condensed > thead > tr > th,
+    .table-condensed > tbody > tr > th,
+    .table-condensed > tfoot > tr > th,
+    .table-condensed > thead > tr > td,
+    .table-condensed > tbody > tr > td,
+    .table-condensed > tfoot > tr > td {
+        padding: 1px;
+        font-size: 13px;
+    }
+
+    .table-striped > tbody > tr:nth-child(2n+1) > td {
+        font-weight: bolder;
+        background-color: #E8EAF6;
+    }
+
+    .table-striped > tbody > tr > th {
+        font-weight: bolder;
+        background-color: #1565C0;
+    }
+
+    .table-striped > tbody > tr:nth-child(2n) > td {
+        font-weight: bolder;
+        background-color: #9FA8DA;
+    }
+</style>
+<body style="font-family: Calibri, sans-serif;">
+  
+<div>
+    <table style=" padding-bottom: 0px; margin-bottom: 0px; font-weight: bold;"
+           class="table table-condensed table-sm table-striped table-bordered">
+        <tr style="text-align: center; color: white;">
+            <th style="width: 5%">AMOUNT</th>
+            <th style="width: 15%">SECTOR</th>
+            <th style="width: 18%">DATE</th>
+            <th style="width: 62%">PASSENGER NAME</th>
+        </tr>
+        {% if open > 0 %}
+            <tr style="text-align: center; color: black;">
+                <td style="width: 5%;text-align: right; padding-right: 3px; font-weight: bolder;">{{ open }}</td>
+                <td colspan="2">OPENING BALANCE</td>
+                <td></td>
+            </tr>
+        {% endif %}
+
+        {% for t in tran %}
+            {% if t.amount > 0 %}
+                <tr>
+                    <td style=" width: 5%; text-align: right; padding-right: 3px; font-weight: bolder;"> {{ t.amount }}</td>
+                    <td style="width: 15%; text-align: center; font-weight:
+                    bolder;">{{ t.sector | upper }}</td>
+                    <td style="width: 18%;text-align: center; font-weight:
+                    bolder;">{{ t.date | upper }}</td>
+                    <td style="width: 62%;text-align: center; font-weight:
+                    bolder;">{{ t.passenger_list | upper }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        <tr style="border: 0px; background-color: #ffffff !important;">
+            <td
+                    style="text-align: right;
+                    background-color: #ffffff !important;
+                    border-right: 0px;
+                    border-left: 0px;
+                    border-top: 2px solid black;
+                    border-bottom: 2px solid black;">
+                {{ total_due }}
+            </td>
+            <td
+                    style="background-color: #ffffff !important;
+                    text-align: center;
+                    border: 0px;">
+                TOTAL DUE
+            </td>
+        </tr>
+
+    </table>
+    {#    <table class="table table-sm table-condensed"#}
+    {#           style="width: 20%; font-weight: bolder; margin-top: 10px;">#}
+    {#        <tr style="background-color: white;">#}
+    {#            <td style="text-align: right;#}
+    {#            width: 25%;#}
+    {#            border-top: 2px solid black;#}
+    {#border-bottom: 2px solid black;">{{ total_due }}</td>#}
+    {#            <td style="width: 75%; text-align: center; border-bottom: 0px;">#}
+    {#                Total#}
+    {#            </th>#}
+    {#        </tr>#}
+    {##}
+    {#    </table>#}
+    {% if not is_credit and open < 0 %}
+    <table style="margin-top: 20px; padding-bottom: 0px; margin-bottom: 0px;
+    "
+                class="table table-condensed table-sm table-bordered">
+ 
+             <tr style="text-align: center; border: 2px black solid">
+                 <th style="width: 5%">AMOUNT</th>
+                 <th style="width: 15%">SECTOR</th>
+                 <th style="width: 18%">DATE</th>
+                 <th style="width: 62%">PASSENGER NAME</th>
+             </tr>
+             {% if open < 0 %}
+                 <tr style="text-align: center; color: black; border: 2px solid black;">
+                     <td style="width: 5%;text-align: right; padding-right: 3px; font-weight: bolder;">{{ open }}</td>
+                     <td colspan="2" style="font-weight: bolder;">OPENING
+                         BALANCE
+                     </td>
+                     <td></td>
+                 </tr>
+             {% endif %}
+             <tr style="font-weight: bolder; border: 0px">
+                 <td
+                     style="text-align: right;
+                     background-color: #ffffff !important;
+                     border-right: 0px;
+                     border-left: 0px;
+                     border-top: 2px solid black;
+                     border-bottom: 2px solid black;">{{ total_rec }}</td>
+                 <td style=" text-align: center; border: 0px;">
+                     {% if total_rec >= 0 %}
+                         TOTAL DUE
+                     {% else %}
+                         TOTAL ADVANCE
+                     {% endif %}
+                 </td>
+             </tr>
+         </table>
+ 
+    {% endif %}
+    {% if is_credit %}
+        <table style="margin-top: 20px; padding-bottom: 0px; margin-bottom: 0px;
+   "
+               class="table table-condensed table-sm table-bordered">
+
+            <tr style="text-align: center; border: 2px black solid">
+                <th style="width: 5%">AMOUNT</th>
+                <th style="width: 15%">SECTOR</th>
+                <th style="width: 18%">DATE</th>
+                <th style="width: 62%">PASSENGER NAME</th>
+            </tr>
+            {% if open < 0 %}
+                <tr style="text-align: center; color: black; border: 2px solid black;">
+                    <td style="width: 5%;text-align: right; padding-right: 3px; font-weight: bolder;">{{ open }}</td>
+                    <td colspan="2" style="font-weight: bolder;">OPENING
+                        BALANCE
+                    </td>
+                    <td></td>
+                </tr>
+            {% endif %}
+
+            {% for t in tran %}
+                {% if t.amount < 0 %}
+                    <tr style="border: 2px solid black;">
+                        <td style=" width: 5%; text-align: right; padding-right: 3px; font-weight: bolder;"> {{ t.amount }}</td>
+                        <td style="width: 15%; text-align: center; font-weight:
+                    bolder;">{{ t.sector | upper }}</td>
+                        <td style="width: 18%;text-align: center; font-weight:
+                    bolder;">{{ t.date  | upper }}</td>
+                        <td style="width: 62%;text-align: center; font-weight:
+                    bolder;">{{ t.passenger_list | upper }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            <tr style="font-weight: bolder; border: 0px">
+                <td
+                    style="text-align: right;
+                    background-color: #ffffff !important;
+                    border-right: 0px;
+                    border-left: 0px;
+                    border-top: 2px solid black;
+                    border-bottom: 2px solid black;">{{ total_rec }}</td>
+                <td style=" text-align: center; border: 0px;">
+                    {% if total_rec >= 0 %}
+                        TOTAL DUE
+                    {% else %}
+                        TOTAL ADVANCE
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+
+        {#        <table class="table table-sm table-condensed"#}
+        {#               style="width: 20%; font-weight: bolder; margin-top: 10px;">#}
+        {#            <tr style="background-color: white;">#}
+        {#                <td style="text-align: right;#}
+        {#            width: 25%;#}
+        {#            border-top: 2px solid black;#}
+        {#border-bottom: 2px solid black;">{{ total_rec }}</td>#}
+        {#                <td style="width: 75%; text-align: center; border-bottom: 0px;">#}
+        {#                    {% if total_rec > 0 %}#}
+        {#                        TOTAL DUE#}
+        {#                    {% else %}#}
+        {#                        TOTAL ADVANCE#}
+        {#                    {% endif %}#}
+        {#                </td>#}
+        {#            </tr>#}
+        {#        </table>#}
+    {% endif %}
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+</html>

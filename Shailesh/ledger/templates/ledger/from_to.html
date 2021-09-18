@@ -1,0 +1,21 @@
+{% extends 'base_template.html' %}
+{% block content %}
+    <a href="{% url 'add-trancation' id=client.id %}">
+        <span style="font-size: 30px; font-weight: bolder;">
+         {{ client.name }}
+    </span>
+    </a>
+
+        <form action="{% url 'from-to' id=client.id %}" method="post">
+            {% csrf_token %}
+            <table>
+            {{ form.as_table }}
+                    </table>
+
+            <input type="submit" value="Submit">
+
+        </form>
+
+
+
+{% endblock %}
