@@ -31,8 +31,15 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="{% url 'add-client' %}">Add Client</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'create-firm' %}">Add Firm</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'update-date' pk=1 %}">Set Date</a>
+                </li>
             </ul>
         </div>
+        <a class="navbar-brand" href="{% url 'update-date' pk=1 %}">{{ date.start_date }} - {{ date.end_date }}</a>
     </div>
 </nav>
 

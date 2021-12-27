@@ -16,7 +16,7 @@ urlpatterns = [
     path('client-detail-verifed/<int:id>/<int:client_id>/',
          views.update_entry_verified,
          name='verifed-entry'),
-    path('client-report/<int:id>/<int:client_id>', views.client_report,
+    path('client-report/<int:id>/<int:client_id>/<int:firm>', views.client_report,
          name='client-report'),
     path('client-ledger/<int:id>', views.ledger_of_client,
          name='client-ledger'),
@@ -25,5 +25,10 @@ urlpatterns = [
     path('delete/<int:pk>/<int:client_id>',
          views.TranctionDeleteView.as_view(), name='delete-tranction'),
     path('update-client/<int:pk>', views.ClientUpdateView.as_view(),
-         name='update-client')
+         name='update-client'),
+    path('update-date/<int:pk>', views.DateSelectUpdateView.as_view(),
+         name='update-date'),
+    path('create-date/', views.DateSelectCreateView.as_view(),
+         name='create-date'),
+     path('create-firm/', views.FirmCreateView.as_view(), name='create-firm'),
 ]

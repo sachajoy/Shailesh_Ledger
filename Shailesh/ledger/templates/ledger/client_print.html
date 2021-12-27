@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 
-    <title>{{ client.name }} {{ tran.last.booking_date | date:'d-M-Y' | upper }}
+    <title>{{ client.name }} {{ tran.last.booking_date | date:'d-M-Y' | upper }} {{firm.name}}
         </title>
 </head>
 <style>
@@ -39,7 +39,7 @@
     }
 </style>
 <body style="font-family: Calibri, sans-serif;">
-  
+<p>{{firm.name}}</p>
 <div>
     <table style=" padding-bottom: 0px; margin-bottom: 0px; font-weight: bold;"
            class="table table-condensed table-sm table-striped table-bordered">
